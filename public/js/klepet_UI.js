@@ -12,6 +12,10 @@ function divElementHtmlTekst(sporocilo) {
   return $('<div></div>').html('<i>' + sporocilo + '</i>');
 }
 
+function elementVideo(sporocilo) {
+  return $('<iframe src="https://www.youtube.com/embed/' + sporocilo + '" width="200px" height="150px" style="padding-left: 20px;" allowfullscreen></iframe>');
+}
+
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
@@ -26,6 +30,7 @@ function procesirajVnosUporabnika(klepetApp, socket) {
     sporocilo = filtirirajVulgarneBesede(sporocilo);
     klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
     $('#sporocila').append(divElementEnostavniTekst(sporocilo));
+    izpisVideev(sporocilo, "local");
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
   }
 
@@ -76,6 +81,7 @@ $(document).ready(function() {
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
+    izpisVideev(sporocilo, "socket");
   });
   
   socket.on('kanali', function(kanali) {
@@ -130,4 +136,24 @@ function dodajSmeske(vhodnoBesedilo) {
       preslikovalnaTabela[smesko] + "' />");
   }
   return vhodnoBesedilo;
+}
+
+function izpisVideev(sporocilo, tipIzpisa) {
+  
+  var tekst;
+  if(tipIzpisa == "socket") {
+    tekst = sporocilo.besedilo;
+  } else {
+    tekst = sporocilo;
+  }
+
+  tekst = tekst.split(' ');
+
+  for(var j in tekst) {
+    if(tekst[j].slice(0, 32) == "https://www.youtube.com/watch?v=") {
+      tekst[j] = tekst[j].replace("https://www.youtube.com/watch?v=", "");
+      $('#sporocila').append(elementVideo(tekst[j]));
+      console.log("zaznan https video");
+    }
+  }
 }
