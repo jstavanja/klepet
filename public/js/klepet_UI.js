@@ -100,6 +100,16 @@ $(document).ready(function() {
       $('#seznam-uporabnikov').append(divElementEnostavniTekst(uporabniki[i]));
     }
   });
+  
+  socket.on('uporabniki', function(uporabniki) {
+    
+    $("#seznam-uporabnikov div").click(function() {
+     
+      var trenutniUporabnik = $(this).text();
+      document.querySelector("#poslji-sporocilo").value = '/zasebno "' + trenutniUporabnik + '"';
+      document.querySelector("#poslji-sporocilo").focus();
+    });
+  });
 
   setInterval(function() {
     socket.emit('kanali');

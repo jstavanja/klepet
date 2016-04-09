@@ -57,3 +57,12 @@ a {
 #pomoc {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+#seznam-uporabnikov div {
+    cursor: pointer;
+    cursor: hand;
+}
+
+#seznam-uporabnikov div:hover {
+    background-color: #d3d3d3;
+}
