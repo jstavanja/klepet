@@ -43,6 +43,15 @@ Klepet.prototype.procesirajUkaz = function(ukaz) {
         sporocilo = 'Neznan ukaz';
       }
       break;
+    case 'dregljaj':
+      besede.shift();
+      if (besede[0] != 0) { // besede[0] je edina še preostala beseda v vrstici po izvedbi .shift() in je username prejemnika dregljaja
+        this.socket.emit('dregljaj', { vzdevek: besede[0] });
+        sporocilo = 'Dregljaj za ' + besede[0];
+      } else {
+        sporocilo = 'Neznan ukaz';
+      }
+      break;
     default:
       sporocilo = 'Neznan ukaz.';
       break;
